@@ -1,2 +1,3 @@
-# TimelaneCore
-TimelaneCore
+# Timelane
+
+A description of this package.
