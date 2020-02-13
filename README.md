@@ -1,5 +1,7 @@
 # Timelane Core
 
+![Timelane Icon](etc/Icon_128x128@2x.png)
+
 The core logging package for [Timelane](https://timelane.tools)
 
 You would usually use a higher level package which provides helpers to use with certain libraries like [TimelaneCombine](https://github.com/icanzilb/TimelaneCombine).
@@ -36,3 +38,32 @@ subscription.end(state: .completed)
 // or
 subscription.end(state: .error("My Error"))
 ```
+
+# Installation
+
+## Swift Package Manager
+
+I . Automatically in Xcode:
+
+ - Click **File > Swift Packages > Add Package Dependency...**  
+ - Use the package URL `https://github.com/icanzilb/TimelaneCore` to add TimelaneCombine to your project.
+
+II . Manually in your **Package.swift** file add:
+
+```swift
+.package(url: "https://github.com/icanzilb/TimelaneCore", .from("0.9.0"))
+```
+
+# Demo
+
+The Timelane package contains a demo app at: https://github.com/icanzilb/timelane.
+
+# Todo
+
+- [ ] CocoaPods
+- [ ] Carthage
+
+# License
+
+Copyright (c) Marin Todorov 2020
+This package is provided under the MIT License.
