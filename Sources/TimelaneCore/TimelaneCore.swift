@@ -7,7 +7,7 @@ import Foundation
 import os
 
 public class Timelane {
-    static let log = OSLog(subsystem: "tools.timelane.subscriptions", category: "subscriptions")
+    static let log = OSLog(subsystem: "tools.timelane.subscriptions", category: OSLog.Category.dynamicStackTracing)
     static let version = 1
     
     public class Subscription {
