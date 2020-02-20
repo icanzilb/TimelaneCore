@@ -9,8 +9,13 @@ import os
 public class Timelane {
     
     static let version = 1
-    static let log = OSLog(subsystem: "tools.timelane.subscriptions", category: OSLog.Category.dynamicStackTracing)
-    
+    static var log: OSLog = {
+        if #available(macOS 10.15, iOS 13, *) {
+            return OSLog(subsystem: "tools.timelane.subscriptions", category: OSLog.Category.dynamicStackTracing)
+        } else {
+            return OSLog(subsystem: "tools.timelane.subscriptions", category: "DynamicStackTracing")
+        }
+    }()
     public class Subscription {
         
         private static var subscriptionCounter: UInt64 = 0
