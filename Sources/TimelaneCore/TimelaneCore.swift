@@ -112,7 +112,7 @@ public class Timelane {
 
 fileprivate extension String {
     func appendingEllipsis(after: Int) -> String {
-        guard count > 50 else { return self }
-        return prefix(50).appending("...")
+        guard count > after else { return self }
+        return prefix(after).appending("...")
     }
 }
