@@ -13,6 +13,7 @@ public class Timelane {
         if #available(macOS 10.15, iOS 13, *) {
             return OSLog(subsystem: "tools.timelane.subscriptions", category: OSLog.Category.dynamicStackTracing)
         } else {
+            // Fallback on a hardcoded category name.
             return OSLog(subsystem: "tools.timelane.subscriptions", category: "DynamicStackTracing")
         }
     }()
