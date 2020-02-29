@@ -6,11 +6,12 @@
 import Foundation
 import os
 
+@available(macOS 10.14, iOS 12, tvOS 12, watchOS 5, *)
 public class Timelane {
     
     static let version = 1
     static var log: OSLog = {
-        if #available(macOS 10.15, iOS 13, *) {
+        if #available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *) {
             return OSLog(subsystem: "tools.timelane.subscriptions", category: OSLog.Category.dynamicStackTracing)
         } else {
             // Fallback on a hardcoded category name.
