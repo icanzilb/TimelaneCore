@@ -11,7 +11,7 @@ public class Timelane {
     
     static let version = 1
     static var log: OSLog = {
-        if #available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *) {
+        if #available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *) {
             return OSLog(subsystem: "tools.timelane.subscriptions", category: OSLog.Category.dynamicStackTracing)
         } else {
             // Fallback on a hardcoded category name.
@@ -113,7 +113,7 @@ public class Timelane {
 
 fileprivate extension String {
     func appendingEllipsis(after: Int) -> String {
-        guard count > 50 else { return self }
-        return prefix(50).appending("...")
+        guard count > after else { return self }
+        return prefix(after).appending("...")
     }
 }
