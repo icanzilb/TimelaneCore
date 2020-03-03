@@ -6,6 +6,7 @@
 import Foundation
 import os
 
+@available(macOS 10.14, iOS 12, tvOS 12, watchOS 5, *)
 public class Timelane {
     
     static let version = 1
