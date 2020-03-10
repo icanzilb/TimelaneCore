@@ -51,7 +51,7 @@ I . Automatically in Xcode:
 II . Manually in your **Package.swift** file add:
 
 ```swift
-.package(url: "https://github.com/icanzilb/TimelaneCore", .from("1.0.0"))
+.package(url: "https://github.com/icanzilb/TimelaneCore", .from("1.0.3"))
 ```
 
 # Demo
@@ -60,8 +60,9 @@ The Timelane package contains a demo app at: https://github.com/icanzilb/timelan
 
 # Todo
 
-- [ ] CocoaPods
-- [ ] Carthage
+- [X] CocoaPods
+- [X] Carthage
+
 
 # License
 
