@@ -19,7 +19,7 @@ public class Timelane {
         }
     }()
 
-    enum LaneType: Int, CaseIterable {
+    public enum LaneType: Int, CaseIterable {
         case subscription, event
     }
 
