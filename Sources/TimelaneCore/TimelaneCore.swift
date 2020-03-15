@@ -18,6 +18,11 @@ public class Timelane {
             return OSLog(subsystem: "tools.timelane.subscriptions", category: "DynamicStackTracing")
         }
     }()
+
+    public enum LaneType: Int, CaseIterable {
+        case subscription, event
+    }
+
     public class Subscription {
         
         private static var subscriptionCounter: UInt64 = 0
