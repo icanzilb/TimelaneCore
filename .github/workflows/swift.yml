@@ -41,18 +41,3 @@ jobs:
       with:
         name: build-logs-${{ github.run_id }}
         path: logs
-        
-        
-  tvOS:
-    name: "Build tvOS"
-    runs-on: macOS-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run tests
-      run: set -o pipefail && xcodebuild -project TimelaneCore/TimelaneCore.xcodeproj -scheme TimelaneCore -sdk appletvsimulator -showdestinations -destination "name=Apple TV" build | xcpretty -c -r html --output logs/tvOS.html
-    - uses: actions/upload-artifact@v1
-      with:
-        name: build-logs-${{ github.run_id }}
-        path: logs
-
