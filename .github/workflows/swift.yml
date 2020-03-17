@@ -8,16 +8,16 @@ on:
 
 jobs:
   SPM:
-    name: "SPM"
+    name: "Tests via SPM"
     runs-on: macOS-latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Run tests
-      run: set -o pipefail && swift test --enable-test-discovery
+      run: set -o pipefail && swift test
 
   macOS:
-    name: "macOS"
+    name: "Build macOS"
     runs-on: macOS-latest
 
     steps:
@@ -30,7 +30,7 @@ jobs:
         path: logs
 
   iOS:
-    name: "iOS"
+    name: "Build iOS"
     runs-on: macOS-latest
 
     steps:
@@ -41,3 +41,18 @@ jobs:
       with:
         name: build-logs-${{ github.run_id }}
         path: logs
+        
+        
+  tvOS:
+    name: "Build tvOS"
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: set -o pipefail && xcodebuild -project TimelaneCore/TimelaneCore.xcodeproj -scheme TimelaneCore -sdk appletvsimulator -destination "name=Apple TV" test | xcpretty -c -r html --output logs/tvOS.html
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build-logs-${{ github.run_id }}
+        path: logs
+
