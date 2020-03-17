@@ -51,7 +51,7 @@ I . Automatically in Xcode:
 II . Manually in your **Package.swift** file add:
 
 ```swift
-.package(url: "https://github.com/icanzilb/TimelaneCore", .from("1.0.3"))
+.package(url: "https://github.com/icanzilb/TimelaneCore", .from("1.0.0"))
 ```
 
 ## CocoaPods
@@ -59,16 +59,16 @@ II . Manually in your **Package.swift** file add:
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate **TimelaneCore** into your Xcode project using CocoaPods, add it to your `Podfile`:
 
 ```ruby
-pod 'TimelaneCore', '~> 1.0.3'
+pod 'TimelaneCore', '~> 1.0'
 ```
 
 ## Carthage
 
- [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate **TimelaneCore** into your Xcode project using Carthage, add it in your `Cartfile`:
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate **TimelaneCore** into your Xcode project using Carthage, add it in your `Cartfile`:
 
- ```ogdl
- github "icanzilb/TimelaneCore" "1.0.3"
- ```
+```ogdl
+github "icanzilb/TimelaneCore" ~>1.0
+```
 
 # Demo
 
