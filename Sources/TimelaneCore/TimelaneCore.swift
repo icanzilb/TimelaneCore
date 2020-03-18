@@ -69,6 +69,7 @@ public class Timelane {
                 errorMessage = ""
             }
             
+            // TODO: https://github.com/icanzilb/TimelaneCore/issues/16
             logger(.end, #dsohandle, log, "subscriptions", .init(subscriptionID), "completion:%{public}d,error:###%{public}s###", completionCode, errorMessage)
         }
         

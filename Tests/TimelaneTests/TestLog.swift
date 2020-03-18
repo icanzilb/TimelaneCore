@@ -35,6 +35,9 @@ class TestLog {
         
         var subscribe: String? { return fields["subscribe"] }
         
+        var completion: String? { return fields["completion"] }
+        var error: String? { return fields["error"] }
+
         var subscription: String? { return fields["subscription"] }
         var type: String? { return fields["type"] }
         var value: String? { return fields["value"] }

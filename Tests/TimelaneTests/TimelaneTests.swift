@@ -83,6 +83,37 @@ final class TimelaneTests: XCTestCase {
         XCTAssertEqual(recorder.logged[4].value, "3")
     }
 
+    func testCompletions() {
+        let recorder = TestLog()
+        Timelane.Subscription.didEmitVersion = true
+        let sub1 = Timelane.Subscription(name: "Test Subscription 1", logger: recorder.log)
+        sub1.end(state: .cancelled)
+
+        let sub2 = Timelane.Subscription(name: "Test Subscription 2", logger: recorder.log)
+        sub2.end(state: .completed)
+
+        let sub3 = Timelane.Subscription(name: "Test Subscription 3", logger: recorder.log)
+        sub3.end(state: .error("Test Error"))
+
+        XCTAssertEqual(recorder.logged.count, 3)
+        guard recorder.logged.count == 3 else {
+            return
+        }
+        
+        // This needs a rewrite when this one is addressed
+        // TODO: https://github.com/icanzilb/TimelaneCore/issues/16
+
+        XCTAssertEqual(recorder.logged[0].signpostType, "end")
+        XCTAssertTrue(recorder.logged[0].log.hasPrefix("completion:1"))
+        
+        XCTAssertEqual(recorder.logged[1].signpostType, "end")
+        XCTAssertTrue(recorder.logged[1].log.hasPrefix("completion:3"))
+
+        XCTAssertEqual(recorder.logged[2].signpostType, "end")
+        XCTAssertTrue(recorder.logged[2].log.hasPrefix("completion:2"))
+        //XCTAssertEqual(recorder.logged[0].error, "Test Error")
+    }
+    
     static var allTests = [
         ("testEmitsVersion", testEmitsVersion),
         ("testEmitsEventValues", testEmitsEventValues),
