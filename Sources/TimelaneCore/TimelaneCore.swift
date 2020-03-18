@@ -86,10 +86,16 @@ public class Timelane {
             logger(.event, #dsohandle, log, "subscriptions", .init(subscriptionID), "subscription:%{public}s###type:%{public}s###value:%{public}s###source:%{public}s###id:%{public}d", name, event.type, text.appendingEllipsis(after: 50), source, subscriptionID)
         }
         
-        static private var didEmitVersion = false
+        static var didEmitVersion = false
         
         private lazy var emitVersionIfNeeded: Void = {
-            logger(.event, #dsohandle, log, "subscriptions", .exclusive, "version:%{public}d", Timelane.version)
+            Self.lock.lock()
+            defer { Self.lock.unlock() }
+            
+            if !Self.didEmitVersion {
+                logger(.event, #dsohandle, log, "subscriptions", .exclusive, "version:%{public}d", Timelane.version)
+                Self.didEmitVersion = true
+            }
         }()
         
         private enum SubscriptionStateCode: Int {
