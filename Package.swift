@@ -16,15 +16,22 @@ let package = Package(
         .library(
             name: "TimelaneCore",
             targets: ["TimelaneCore"]),
+        .library(
+            name: "TimelaneCoreTestUtils",
+            targets: ["TimelaneCoreTestUtils"]),
     ],
     dependencies: [],
     targets: [
         .target(
             name: "TimelaneCore",
             dependencies: []),
+        .target(
+            name: "TimelaneCoreTestUtils",
+            dependencies: [],
+            path: "Tests/TimelaneCoreTestUtils"),
         .testTarget(
-            name: "TimelaneTests",
-            dependencies: ["TimelaneCore"]),
+            name: "TimelaneCoreTests",
+            dependencies: ["TimelaneCore", "TimelaneCoreTestUtils"]),
     ],
     swiftLanguageVersions: [.v5]
 )

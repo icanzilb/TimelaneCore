@@ -1,5 +1,6 @@
 import XCTest
 import os
+import TimelaneCoreTestUtils
 @testable import TimelaneCore
 
 @available(macOS 10.14, iOS 12, tvOS 12, watchOS 5, *)
@@ -31,17 +32,9 @@ final class TimelaneTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(recorder.logged[0].type, "Output")
-        XCTAssertEqual(recorder.logged[0].subscription, "Test Subscription")
-        XCTAssertEqual(recorder.logged[0].value, "1")
-
-        XCTAssertEqual(recorder.logged[1].type, "Output")
-        XCTAssertEqual(recorder.logged[1].subscription, "Test Subscription")
-        XCTAssertEqual(recorder.logged[1].value, "2")
-
-        XCTAssertEqual(recorder.logged[2].type, "Output")
-        XCTAssertEqual(recorder.logged[2].subscription, "Test Subscription")
-        XCTAssertEqual(recorder.logged[2].value, "3")
+        XCTAssertEqual(recorder.logged[0].outputTldr, "Output, Test Subscription, 1")
+        XCTAssertEqual(recorder.logged[1].outputTldr, "Output, Test Subscription, 2")
+        XCTAssertEqual(recorder.logged[2].outputTldr, "Output, Test Subscription, 3")
     }
 
     func testEmitsSubscriptions() {
@@ -65,22 +58,16 @@ final class TimelaneTests: XCTestCase {
         XCTAssertEqual(recorder.logged[0].subscribe, "Test Subscription 1")
 
         XCTAssertEqual(recorder.logged[1].signpostType, "event")
-        XCTAssertEqual(recorder.logged[1].type, "Output")
-        XCTAssertEqual(recorder.logged[1].subscription, "Test Subscription 1")
-        XCTAssertEqual(recorder.logged[1].value, "1")
+        XCTAssertEqual(recorder.logged[1].outputTldr, "Output, Test Subscription 1, 1")
 
         XCTAssertEqual(recorder.logged[2].signpostType, "begin")
         XCTAssertEqual(recorder.logged[2].subscribe, "Test Subscription 2")
 
         XCTAssertEqual(recorder.logged[3].signpostType, "event")
-        XCTAssertEqual(recorder.logged[3].type, "Output")
-        XCTAssertEqual(recorder.logged[3].subscription, "Test Subscription 2")
-        XCTAssertEqual(recorder.logged[3].value, "2")
+        XCTAssertEqual(recorder.logged[3].outputTldr, "Output, Test Subscription 2, 2")
 
         XCTAssertEqual(recorder.logged[4].signpostType, "event")
-        XCTAssertEqual(recorder.logged[4].type, "Output")
-        XCTAssertEqual(recorder.logged[4].subscription, "Test Subscription 1")
-        XCTAssertEqual(recorder.logged[4].value, "3")
+        XCTAssertEqual(recorder.logged[4].outputTldr, "Output, Test Subscription 1, 3")
     }
 
     func testCompletions() {

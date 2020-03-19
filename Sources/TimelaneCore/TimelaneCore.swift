@@ -23,6 +23,9 @@ public class Timelane {
         case subscription, event
     }
 
+    public typealias Logger = (_ type: OSSignpostType, _ dso: UnsafeRawPointer, _ log: OSLog, _ name: StaticString, _ signpostID: OSSignpostID, _ format: StaticString, _ arguments: CVarArg...) -> Void
+    public static let defaultLogger: Logger = os_signpost
+    
     public class Subscription {
         
         private static var subscriptionCounter: UInt64 = 0
@@ -30,11 +33,10 @@ public class Timelane {
         
         private let subscriptionID: UInt64
         private let name: String
-        
-        public typealias Logger = (_ type: OSSignpostType, _ dso: UnsafeRawPointer, _ log: OSLog, _ name: StaticString, _ signpostID: OSSignpostID, _ format: StaticString, _ arguments: CVarArg...) -> Void
+                
         private var logger: Logger
         
-        public init(name: String? = nil, logger: @escaping Logger = os_signpost) {
+        public init(name: String? = nil, logger: @escaping Logger = Timelane.defaultLogger) {
             Self.lock.lock()
             Self.subscriptionCounter += 1
             subscriptionID = Self.subscriptionCounter
