@@ -31,7 +31,10 @@ public class Timelane {
         private let subscriptionID: UInt64
         private let name: String
         
-        public init(name: String? = nil) {
+        public typealias Logger = (_ type: OSSignpostType, _ dso: UnsafeRawPointer, _ log: OSLog, _ name: StaticString, _ signpostID: OSSignpostID, _ format: StaticString, _ arguments: CVarArg...) -> Void
+        private var logger: Logger
+        
+        public init(name: String? = nil, logger: @escaping Logger = os_signpost) {
             Self.lock.lock()
             Self.subscriptionCounter += 1
             subscriptionID = Self.subscriptionCounter
@@ -42,11 +45,12 @@ public class Timelane {
             } else {
                 self.name = "subscription-\(subscriptionID)"
             }
+            self.logger = logger
         }
         
         public func begin(source: String = "") {
-            _ = Self.emitVersionIfNeeded
-            os_signpost(.begin, log: log, name: "subscriptions", signpostID: .init(subscriptionID) ,"subscribe:%{public}s###source:%{public}s###id:%{public}d", name, source, subscriptionID)
+            _ = emitVersionIfNeeded
+            logger(.begin, #dsohandle, log, "subscriptions", .init(subscriptionID) ,"subscribe:%{public}s###source:%{public}s###id:%{public}d", name, source, subscriptionID)
         }
         
         public func end(state: SubscriptionEndState) {
@@ -65,11 +69,12 @@ public class Timelane {
                 errorMessage = ""
             }
             
-            os_signpost(.end, log: log, name: "subscriptions", signpostID: .init(subscriptionID), "completion:%{public}d,error:###%{public}s###", completionCode, errorMessage)
+            // TODO: https://github.com/icanzilb/TimelaneCore/issues/16
+            logger(.end, #dsohandle, log, "subscriptions", .init(subscriptionID), "completion:%{public}d,error:###%{public}s###", completionCode, errorMessage)
         }
         
         public func event(value event: EventType, source: String = "") {
-            _ = Self.emitVersionIfNeeded
+            _ = emitVersionIfNeeded
             
             let text: String
             switch event {
@@ -79,13 +84,19 @@ public class Timelane {
             case .cancelled: text = ""
             }
             
-            os_signpost(.event, log: log, name: "subscriptions", signpostID: .init(subscriptionID), "subscription:%{public}s###type:%{public}s###value:%{public}s###source:%{public}s###id:%{public}d", name, event.type, text.appendingEllipsis(after: 50), source, subscriptionID)
+            logger(.event, #dsohandle, log, "subscriptions", .init(subscriptionID), "subscription:%{public}s###type:%{public}s###value:%{public}s###source:%{public}s###id:%{public}d", name, event.type, text.appendingEllipsis(after: 50), source, subscriptionID)
         }
         
-        static private var didEmitVersion = false
+        static var didEmitVersion = false
         
-        static var emitVersionIfNeeded: Void = {
-            os_signpost(.event, log: log, name: "subscriptions", signpostID: .exclusive, "version:%{public}d", Timelane.version)
+        private lazy var emitVersionIfNeeded: Void = {
+            Self.lock.lock()
+            defer { Self.lock.unlock() }
+            
+            if !Self.didEmitVersion {
+                logger(.event, #dsohandle, log, "subscriptions", .exclusive, "version:%{public}d", Timelane.version)
+                Self.didEmitVersion = true
+            }
         }()
         
         private enum SubscriptionStateCode: Int {
