@@ -265,6 +265,7 @@
 		BC7AD52F2417C4D20022D198 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ADDITIONAL_SDKS = "watchos appletvos macosx";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -292,6 +293,7 @@
 		BC7AD5302417C4D20022D198 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ADDITIONAL_SDKS = "watchos appletvos macosx";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
