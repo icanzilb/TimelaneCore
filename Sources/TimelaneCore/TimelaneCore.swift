@@ -22,6 +22,16 @@ public class Timelane {
     public enum LaneType: Int, CaseIterable {
         case subscription, event
     }
+    
+    public struct LaneTypeOptions: OptionSet {
+        public let rawValue: Int
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+        public static let subscription: LaneTypeOptions = .init(rawValue: 1 << 0)
+        public static let event: LaneTypeOptions        = .init(rawValue: 1 << 1)
+        public static let all: LaneTypeOptions          = [.subscription, .event]
+    }
 
     public typealias Logger = (_ type: OSSignpostType, _ dso: UnsafeRawPointer, _ log: OSLog, _ name: StaticString, _ signpostID: OSSignpostID, _ format: StaticString, _ arguments: CVarArg...) -> Void
     public static let defaultLogger: Logger = os_signpost
