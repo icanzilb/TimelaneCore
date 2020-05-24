@@ -38,7 +38,7 @@ public class Timelane {
     
     public class Subscription {
         
-        private static var subscriptionCounter: UInt64 = 0
+        static var subscriptionCounter: UInt64 = 0
         private static var lock = NSRecursiveLock()
         
         private let subscriptionID: UInt64
