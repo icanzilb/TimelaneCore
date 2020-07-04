@@ -101,9 +101,26 @@ final class TimelaneTests: XCTestCase {
         //XCTAssertEqual(recorder.logged[0].error, "Test Error")
     }
     
+    func testTestLogColonDelimiter() {
+        let recorder = TestLog()
+        Timelane.Subscription.didEmitVersion = true
+        let sub = Timelane.Subscription(name: "Test Subscription", logger: recorder.log)
+        sub.event(value: .value("value:1"))
+        sub.event(value: .value("type:123:456"))
+        
+        XCTAssertEqual(recorder.logged.count, 2)
+        guard recorder.logged.count == 2 else {
+            return
+        }
+        
+        XCTAssertEqual(recorder.logged[0].outputTldr, "Output, Test Subscription, value:1")
+        XCTAssertEqual(recorder.logged[1].outputTldr, "Output, Test Subscription, type:123:456")
+    }
+    
     static var allTests = [
         ("testEmitsVersion", testEmitsVersion),
         ("testEmitsEventValues", testEmitsEventValues),
         ("testEmitsSubscriptions", testEmitsSubscriptions),
+        ("testTestLogColonDelimiter", testTestLogColonDelimiter),
     ]
 }
