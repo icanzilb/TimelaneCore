@@ -24,9 +24,9 @@ public class TestLog {
             
             fields = log.components(separatedBy: "###")
                 .reduce(into: [String: String](), { (result, part) in
-                    let pair = part.components(separatedBy: ":")
-                    guard pair.count == 2 else { return }
-                    result[pair[0]] = pair[1]
+                    let components = part.components(separatedBy: ":")
+                    guard components.count > 1 else { return }
+                    result[components[0]] = components.dropFirst().joined(separator: ":")
                 })
         }
         
