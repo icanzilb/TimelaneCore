@@ -6,6 +6,12 @@
 import Foundation
 import os
 
+/// A timelane logger that proxies events & values to another object.
+@available(macOS 10.14, iOS 12, tvOS 12, watchOS 5, *)
+public protocol ProxyLogger {
+    func log(_ type: OSSignpostType, _ dso: UnsafeRawPointer, _ log: OSLog, _ name: StaticString, _ signpostID: OSSignpostID, _ format: StaticString, _ arguments: CVarArg...) -> Void
+}
+
 /// A set of core functions and types to enable higher-level
 /// libraries like TimelaneCombine communicate with Instruments.
 @available(macOS 10.14, iOS 12, tvOS 12, watchOS 5, *)
@@ -47,8 +53,20 @@ public class Timelane {
 
     /// An alias used to describe a logger function.
     public typealias Logger = (_ type: OSSignpostType, _ dso: UnsafeRawPointer, _ log: OSLog, _ name: StaticString, _ signpostID: OSSignpostID, _ format: StaticString, _ arguments: CVarArg...) -> Void
-    /// A default logger that pipes logged values to Timelane running in Instruments.
-    public static let defaultLogger: Logger = os_signpost
+    /// A logger to use when no logger is specified. By default it's the Timelane Instrument logger.
+    public static var defaultLogger = Loggers.timelaneInstrument
+        
+    /// Commonly used Timelane loggers.
+    public enum Loggers {
+        /// The logger that pipes values & events to Timelane running in Instruments.
+        public static let timelaneInstrument: Logger = os_signpost
+        /// A logger that does not log anything.
+        public static let disabled: Logger = devnull
+        /// A logger that proxies values & events to another object.
+        public static func proxy(to proxy: ProxyLogger) -> Logger { proxy.log }
+
+        private static func devnull(_ type: OSSignpostType, _ dso: UnsafeRawPointer = #dsohandle, _ log: OSLog = OSLog(subsystem: "", category: ""), _ name: StaticString, _ signpostID: OSSignpostID, _ format: StaticString, _ arguments: CVarArg...) -> Void { }
+    }
     
     /// A subscription that represents a completable or an indefinite publisher that could emit values.
     ///
