@@ -16,7 +16,7 @@ final class TimelaneTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(recorder.logged[0].version, "1")
+        XCTAssertEqual(recorder.logged[0].version, "2")
     }
     
     func testEmitsEventValues() {

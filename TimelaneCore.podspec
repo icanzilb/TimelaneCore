@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TimelaneCore'
-  s.version          = '1.0.11'
+  s.version          = '2.0.0'
   s.summary          = 'The core logging package for Timelane.'
 
   s.description      = <<-DESC
