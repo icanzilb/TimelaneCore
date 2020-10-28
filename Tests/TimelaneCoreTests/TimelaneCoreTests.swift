@@ -4,6 +4,9 @@ import TimelaneCoreTestUtils
 @testable import TimelaneCore
 
 @available(macOS 10.14, iOS 12, tvOS 12, watchOS 5, *)
+extension TestLog: ProxyLogger {}
+
+@available(macOS 10.14, iOS 12, tvOS 12, watchOS 5, *)
 final class TimelaneTests: XCTestCase {
     func testEmitsVersion() {
         let recorder = TestLog()
@@ -16,7 +19,7 @@ final class TimelaneTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(recorder.logged[0].version, "1")
+        XCTAssertEqual(recorder.logged[0].version, "2")
     }
     
     func testEmitsEventValues() {
@@ -117,10 +120,47 @@ final class TimelaneTests: XCTestCase {
         XCTAssertEqual(recorder.logged[1].outputTldr, "Output, Test Subscription, type:123:456")
     }
     
+    func testProxyLogger() {
+        let recorder = TestLog()
+        let proxyLogger = Timelane.Loggers.proxy(to: recorder)
+        Timelane.Subscription.didEmitVersion = true
+        let sub = Timelane.Subscription(name: "Test Subscription", logger: proxyLogger)
+        sub.event(value: .value("value:1"))
+        sub.event(value: .value("type:123:456"))
+        
+        XCTAssertEqual(recorder.logged.count, 2)
+        guard recorder.logged.count == 2 else {
+            return
+        }
+        
+        XCTAssertEqual(recorder.logged[0].outputTldr, "Output, Test Subscription, value:1")
+        XCTAssertEqual(recorder.logged[1].outputTldr, "Output, Test Subscription, type:123:456")
+    }
+    
+    func testProxyOverridesDefaultLogger() {
+        let recorder = TestLog()
+        let proxyLogger = Timelane.Loggers.proxy(to: recorder)
+        Timelane.defaultLogger = Timelane.Loggers.disabled
+        Timelane.Subscription.didEmitVersion = true
+        let sub = Timelane.Subscription(name: "Test Subscription", logger: proxyLogger)
+        sub.event(value: .value("value:1"))
+        sub.event(value: .value("type:123:456"))
+        
+        XCTAssertEqual(recorder.logged.count, 2)
+        guard recorder.logged.count == 2 else {
+            return
+        }
+        
+        XCTAssertEqual(recorder.logged[0].outputTldr, "Output, Test Subscription, value:1")
+        XCTAssertEqual(recorder.logged[1].outputTldr, "Output, Test Subscription, type:123:456")
+    }
+    
     static var allTests = [
         ("testEmitsVersion", testEmitsVersion),
         ("testEmitsEventValues", testEmitsEventValues),
         ("testEmitsSubscriptions", testEmitsSubscriptions),
         ("testTestLogColonDelimiter", testTestLogColonDelimiter),
+        ("testProxyLogger", testProxyLogger),
+        ("testProxyOverridesDefaultLogger", testProxyOverridesDefaultLogger),
     ]
 }
