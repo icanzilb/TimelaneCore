@@ -51,7 +51,7 @@ I . Automatically in Xcode:
 II . Manually in your **Package.swift** file add:
 
 ```swift
-.package(url: "https://github.com/icanzilb/TimelaneCore", from: "2.0")
+.package(url: "https://github.com/icanzilb/TimelaneCore", from: "2.0.0")
 ```
 
 ## CocoaPods
