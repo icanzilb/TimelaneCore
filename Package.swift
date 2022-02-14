@@ -24,10 +24,7 @@ let package = Package(
     targets: [
         .target(
             name: "TimelaneCore",
-            dependencies: [],
-            linkerSettings: [
-                .unsafeFlags(["-Xlinker", "-application_extension"])
-            ]),
+            dependencies: []),
         .target(
             name: "TimelaneCoreTestUtils",
             dependencies: [],
